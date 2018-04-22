@@ -1,0 +1,83 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+ul {
+  list-style-type: none;
+}
+body {
+  padding: 15px;
+  height: 250px;
+  max-height: 350px;
+  width: 300px;
+}
+.title {
+  margin: 0 0 10px;
+}
+.form {
+}
+.form__block {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+.form__label {
+  font-size: 14px;
+  margin-right: 10px;
+}
+.dropdown {
+  position: relative;
+}
+.dropdown-title {
+  font-size: 14px;
+  cursor: pointer;
+  padding: 5px;
+}
+.dropdown-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  display: none;
+  z-index: 5;
+  background: #FFF;
+  padding: 5px;
+  border: 1px solid grey;
+  max-height: 100px;
+  overflow-y: auto;
+}
+.dropdown-item {
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.dropdown.shown .dropdown-list {
+  display: block;
+}
+.summary {
+}
+.route {
+  text-align: center;
+}
+.summary__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.link-btn {
+  border: none;
+  color: #3281ff;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.routes {
+  margin: 10px 0;
+  max-height: 100%;
+  overflow-y: auto;
+}
+.routes__train {
+  margin-bottom: 10px;
+}

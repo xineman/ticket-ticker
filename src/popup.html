@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./css/popup.css">
+  <title>Document</title>
+</head>
+
+<body>
+  <section id="input">
+    <h3 class="title">Trip info:</h3>
+    <form class="form">
+      <section class="form__block">
+        <p class="form__label">From:</p>
+        <div id="from" class="dropdown">
+          <input type="text" class="dropdown-title" />
+          <ul class="dropdown-list">
+          </ul>
+        </div>
+      </section>
+      <section class="form__block">
+        <p class="form__label">To:</p>
+        <div id="to" class="dropdown">
+          <input type="text" class="dropdown-title" />
+          <ul class="dropdown-list">
+          </ul>
+        </div>
+      </section>
+      <button type="button" id="start">Start</button>
+  </section>
+  <section class="summary" id="inputSummary">
+    <p class="route"></p>
+    <div class="summary__bottom">
+      <p class="date"></p>
+      <button class="link-btn" type="button" id="edit">Change info</button>
+    </div>
+  </section>
+  <section class="routes" id="routes">
+    <!-- <div class="routes__train">
+      <p class="routes__train-title">
+        <strong class="routes__train-number">059O</strong>
+        <span class="routes__train-name">dfsdf -> asdfhdf</span>
+      </p>
+      <ul class="routes__types">
+        <li class="routes__type">plackart: 45</li>
+        <li class="routes__type">plackart: 45</li>
+        <li class="routes__type">plackart: 45</li>
+      </ul>
+    </div> -->
+  </section>
+  </form>
+  <script src="./commons.js"></script>
+  <script src="./popup.js"></script>
+</body>
+
+</html>
