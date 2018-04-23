@@ -3,25 +3,35 @@ import { getStations, getTrains } from 'Services/uz';
 import { generateList, generateRoutes } from 'Helpers';
 // import * as storage from 'Services/storage';
 
+function Route() {
+  this.from = {
+    name: null,
+    id: null,
+  };
+  this.to = {
+    name: null,
+    id: null,
+  };
+  this.date = '2018-05-11';
+  this.time = '00:00';
+}
+
+const route = new Route();
 
 let stations = [];
-const inputs = {
-  time: '00:00',
-  date: '2018-05-11',
-};
-const selectedStations = {
-  from: '',
-  to: '',
-};
+
+$('#inputSummary').hide();
 
 const dropdowns = $('.dropdown');
-$('#inputSummary').hide();
 
 dropdowns.on('click', '.dropdown-item', function handleClick({ target }) {
   const dropdown = $(this).closest('.dropdown');
+  const stationType = dropdown.get(0).id;
   const station = stations.find(s => s.value === Number(target.dataset.station));
-  inputs[dropdown.get(0).id] = station.value;
-  selectedStations[dropdown.get(0).id] = station.title;
+  route[stationType] = {
+    name: station.title,
+    id: station.value,
+  };
   dropdown.find('.dropdown-title').val(station.title);
   dropdown.removeClass('shown');
 });
@@ -44,14 +54,20 @@ dropdowns.on('keyup', async function handleChange({ target }) {
 
 async function handleStart() {
   const summary = $('#inputSummary');
-  summary.find('.route').text(`${selectedStations.from} -> ${selectedStations.to}`);
-  summary.find('.date').text(inputs.date);
-  $('#input').hide();
+  summary.find('.route').text(`${route.from.name} -> ${route.to.name}`);
+  summary.find('.date').text(route.date);
   summary.show();
+  $('#input').hide();
+
   const formData = new FormData();
-  Object.keys(inputs).forEach(k => formData.append(k, inputs[k]));
+  formData.append('from', route.from.id);
+  formData.append('to', route.to.id);
+  formData.append('date', route.date);
+  formData.append('time', route.time);
+
   const trains = await getTrains(formData);
   generateRoutes(trains);
+
   $('#routes').show();
 }
 
