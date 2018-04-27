@@ -1,6 +1,7 @@
 import $ from 'jquery';
 import { getStations, getTrains } from 'Services/uz';
 import { generateList, generateRoutes } from 'Helpers';
+import { GET_TRAINS } from '../constants';
 // import * as storage from 'Services/storage';
 
 function Route() {
@@ -12,7 +13,7 @@ function Route() {
     name: null,
     id: null,
   };
-  this.date = '2018-05-11';
+  this.date = '2018-05-09';
   this.time = '00:00';
 }
 
@@ -53,19 +54,18 @@ dropdowns.on('keyup', async function handleChange({ target }) {
 });
 
 async function handleStart() {
+  chrome.runtime.sendMessage({
+    type: GET_TRAINS,
+    route,
+  });
+
   const summary = $('#inputSummary');
   summary.find('.route').text(`${route.from.name} -> ${route.to.name}`);
   summary.find('.date').text(route.date);
   summary.show();
   $('#input').hide();
 
-  const formData = new FormData();
-  formData.append('from', route.from.id);
-  formData.append('to', route.to.id);
-  formData.append('date', route.date);
-  formData.append('time', route.time);
-
-  const trains = await getTrains(formData);
+  const trains = await getTrains(route);
   generateRoutes(trains);
 
   $('#routes').show();

@@ -1,30 +1,37 @@
-import axios from 'axios';
-import { GET_USD_PRICE } from '../constants';
+import { getTrains } from 'Services/uz';
+import { GET_TRAINS, POLL_INTERVAL } from '../constants';
 
-chrome.webRequest.onBeforeSendHeaders.addListener(
-  (details) => {
-    if (details.tabId === -1) {
-      return { requestHeaders: details.requestHeaders.filter(h => h.name !== 'Cookie') };
-    }
-    return undefined;
-  },
-  { urls: ['*://steamcommunity.com/market?rate=1'] },
-  ['blocking', 'requestHeaders']);
 
-chrome.webRequest.onHeadersReceived.addListener(
-  (details) => {
-    if (details.tabId === -1) {
-      return { responseHeaders: details.responseHeaders.filter(h => h.name !== 'Set-Cookie') };
+const pollTrains = async (route) => {
+  try {
+    const trains = await getTrains(route);
+    const places = trains.find(t => t.num === '131О').types.find(type => type.id === 'П').places;
+    console.log('[Places]:', places);
+    if (places < 11) {
+      chrome.notifications.create({
+        type: 'basic',
+        iconUrl: 'img/icon16.png',
+        title: 'Ticket notification',
+        message: `Only ${places} places left`,
+        requireInteraction: true,
+      });
     }
-    return undefined;
-  },
-  { urls: ['*://steamcommunity.com/market?rate=1'] },
-  ['blocking', 'responseHeaders']);
+  } catch (e) {
+    chrome.notifications.create({
+      type: 'basic',
+      iconUrl: 'img/icon16.png',
+      title: 'Ticket notification',
+      message: `Error happened: ${e.message}`,
+    });
+  }
+  setTimeout(() => pollTrains(route), POLL_INTERVAL + (Math.random() * 100));
+};
 
 chrome.runtime.onMessage.addListener(
-  async (message, sender) => {
-    if (message.type === GET_USD_PRICE) {
-      const { data: raw } = await axios.get('https://steamcommunity.com/market?rate=1');
-      chrome.tabs.sendMessage(sender.tab.id, { raw });
+  ({ type, route }) => {
+    if (type === GET_TRAINS) {
+      pollTrains(route);
     }
-  });
+    return true;
+  },
+);

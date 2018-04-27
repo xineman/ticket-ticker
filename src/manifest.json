@@ -17,6 +17,7 @@
     "webRequest",
     "webRequestBlocking",
     "cookies",
+    "notifications",
     "*://booking.uz.gov.ua/*"
   ],
   "icons": {
